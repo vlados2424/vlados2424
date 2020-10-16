@@ -1,53 +1,119 @@
 package com.company;
 
-public class MyList {
-    class Node {
-        int value;
+import java.util.Collection;
+import java.util.Iterator;
+
+public class MyList<T> implements Collection<T> {
+
+    class Node<T> {
+        private T value;
         Node next;
 
-        public Node(int value) {
+        public Node(T value) {
             this.value = value;
             this.next = null;
         }
 
-        public int getValue() {
+        public T getValue() {
             return value;
         }
 
-        public void setValue(int value) {
+        public void setValue(T value) {
             this.value = value;
         }
 
-        public Node getNext() {
+        public Node<T> getNext() {
             return next;
         }
 
-        public void setNext(Node next) {
+        public void setNext(Node<T> next) {
             this.next = next;
         }
 
-        public String toString(){
-            return Integer.toString(this.value);
-        }
         public boolean hasNext() {
             return this.next != null;
         }
     }
-    Node begin;
+    Node<T> begin;
     long length;
+    private Comparable comparable;
 
-    public MyList () {
+    public MyList (Comparable compare) {
         this.begin = null;
         this.length = 0;
+        this.comparable = compare;
     }
-    public void add(int value) {
+
+    @Override
+    public int size() {
+        return 0;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        return false;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return null;
+    }
+
+    @Override
+    public Object[] toArray() {
+        return new Object[0];
+    }
+
+    @Override
+    public <T1> T1[] toArray(T1[] a) {
+        return null;
+    }
+
+    @Override
+    public boolean add(T t) {
         if (begin == null) {
-            this.begin = new Node(value);
+            this.begin = new Node(t);
         }
         else {
-            this.end().setNext(new Node(value));
+            this.end().setNext(new Node(t));
         }
         this.length++;
+        return true;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        return false;
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends T> c) {
+        return false;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public void clear() {
+
     }
 
     public Node end() {
@@ -61,30 +127,31 @@ public class MyList {
         return iter;
     }
 
-    public String toString() {
+    public String tostring() {
         String result = "[";
         if (this.begin != null) {
             Node iter = this.begin;
             while (iter.hasNext()) {
-                result += iter.toString() + ", ";
+                result += iter.getValue().toString() + ", ";
                 iter = iter.getNext();
         }
-        result += iter.toString() + " ";
+        result += iter.getValue().toString() + " ";
         }
         result += "]";
         return result;
     }
     public void swap(int firstpos, int secondpos) {
-        Node iter;
-        iter = indexAt(firstpos);
-        int a = iter.getValue();
-        iter = indexAt(secondpos);
-        int b = iter.getValue();
-        iter = indexAt(firstpos);
-        iter.setValue(b);
-        iter = indexAt(secondpos);
-        iter.setValue(a);
+        Node iter1;
+        String a;
+        Node iter2;
+        iter1 = indexAt(firstpos);
+        iter2 = indexAt(secondpos);
+        a = iter1.getValue().toString();
+        iter1.setValue(iter2.getValue());
+        iter2.setValue(a);
+
     }
+
     public Node indexAt (int index) {
         Node iter = this.begin;
         int i = 0;
@@ -98,20 +165,21 @@ public class MyList {
     }
     public void sort() {
         Node iter;
-        int min;
+        Node min;
         int k;
         for (int i = 0; i < this.length; ++i) {
             k = i;
-            iter = indexAt(i);
-            min = iter.getValue();
+            min = indexAt(i);
             for (int j = i; j < this.length; ++j) {
                 iter = indexAt(j);
-                if (iter.getValue() < min){
-                    min = iter.getValue();
+                if (this.comparable.compare(iter, min) <= 0) {
+                    min = indexAt(j);
                     k = j;
                 }
             }
             swap(i, k);
         }
     }
+
+
 }

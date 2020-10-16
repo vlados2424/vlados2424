@@ -3,17 +3,12 @@ package com.company;
 public class Main {
 
     public static void main(String[] args) {
-        MyList myList = new MyList();
-        myList.add(12);
-        myList.add(15);
-        myList.add(2);
-        myList.add(9);
-        myList.add(1);
-        myList.add(19);
-        System.out.println(myList.toString());
+        MyList<String> myList = new MyList((a, b) -> a.getValue().toString().compareTo(b.getValue().toString()));
+        Randomizer.randomString(myList, 100);
+        System.out.println(myList.tostring());
         myList.swap(0,3);
-        System.out.println(myList.toString());
+        System.out.println(myList.tostring());
         myList.sort();
-        System.out.println(myList.toString());
+        System.out.println(myList.tostring());
     }
 }
